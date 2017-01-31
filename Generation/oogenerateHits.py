@@ -47,4 +47,4 @@ class Hit:
         """ print hit to stdout """
         #TODO: add support for printing datasets - what should the format be?
         print(self.hbc, ',', self.pbc, ',', list(self.lhit), sep='')
-        
+
