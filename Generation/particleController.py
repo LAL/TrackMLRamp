@@ -10,6 +10,8 @@ import oogenerateParticles as gp
 import oogenerateHits as gh
 import oogenerateDetectors as gd
 import matplotlib.pyplot as plt
+
+from util import pt_dist
 from math import sqrt
 from sympy.geometry import Circle, Ray, Point, intersection
 
@@ -128,11 +130,12 @@ class particleController:
     #-- PARTICLE PREDICTION METHODS --#
     def predictParticles(self):
         """ predict particles using hits in self.hits """
+        tempcent = Point(0, 0)
         temphits = self.hits
         for hit in self.hits:
             if hit.pbc != "?":
                 #note: assuming particle origin is (0, 0, 0)
-                thispart = gp.Particle(hit.pbc, False, [0, 0])
+                thispart = gp.Particle(hit.pbc, [], False, [0, 0])
                 self.particles.append(thispart) # create particle
                 thispart.hits.append(hit)
                 thispart.hitbcs.append(hit.hbc)
@@ -148,12 +151,13 @@ class particleController:
                     l = len(particle.hits)
                     thisray = Ray(Point(particle.hits[l-2].lhit[0], particle.hits[l-2].lhit[1]),
                                   Point(particle.hits[l-1].lhit[0], particle.hits[l-1].lhit[1]))
-                intersect = self.detectors[i].circle.intersection(thisray)
+                c = Circle(tempcent, self.detectors[i].radius)
+                intersect = c.intersection(thisray)
                 if len(intersect) == 0: continue
                 thisi = [intersect[0].x.evalf(), intersect[0].y.evalf()]
                 for ind, hit in enumerate(temphits):
                     if hit.detpos == i+1:
-                        thislen = self.pt_dist(thisi, hit.lhit)
+                        thislen = pt_dist(thisi, hit.lhit)
                         if thislen < minlen:
                             minlen = thislen
                             minind = ind
@@ -247,10 +251,6 @@ class particleController:
         self.clearHits()
         for particle in self.particles:
             self.hits.extend(particle.hits)
-
-    def pt_dist(self, p1, p2): #TODO add to helper methods
-        """ distance between two points described by a list """
-        return sqrt((p1[0] - p2[0])**2 + (p1[1] - p2[1])**2)
 
     def isclose(self, v1, v2, tol):
         """ check if two values are within a tolerance range of eachother """

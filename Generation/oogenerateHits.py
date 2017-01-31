@@ -45,5 +45,6 @@ class Hit:
 
     def printHit(self, dataset = False):
         """ print hit to stdout """
-        if dataset:
-            print(self.hbc, ',', self.pbc, ',', list(self.lhit), sep='')
+        if dataset and self.detpos != 0 and self.detpos != 1: 
+            print(self.hbc, ', ?,', list(self.lhit), sep='')
+        else: print(self.hbc, ',', self.pbc, ',', list(self.lhit), sep='')
