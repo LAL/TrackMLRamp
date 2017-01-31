@@ -11,6 +11,7 @@ oogenerateDetectors.py - Detector data type and methods
 
 Rest is either test code or helper code. 
 
+Please do not commit data files to the repo. 
 Please add to your .gitignore:
 
 *~
@@ -18,6 +19,7 @@ Please add to your .gitignore:
 *.csv
 *.pyc
 *.txt
+*.zip
 
 
 

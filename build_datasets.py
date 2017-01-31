@@ -8,7 +8,7 @@ Creates datasets.
 
 import os
 import sys
-import particleController as pc
+import Generation.particleController as pc
 
 def createDataset(n):
     #first and second datasets
