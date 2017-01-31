@@ -45,6 +45,5 @@ class Hit:
 
     def printHit(self, dataset = False):
         """ print hit to stdout """
-        if dataset and self.detpos != 0 and self.detpos != 1: 
-            print(self.hbc, ', ?,', list(self.lhit), sep='')
-        else: print(self.hbc, ',', self.pbc, ',', list(self.lhit), sep='')
+        #TODO: add support for printing datasets - what should the format be?
+        print(self.hbc, ',', self.pbc, ',', list(self.lhit), sep='')
