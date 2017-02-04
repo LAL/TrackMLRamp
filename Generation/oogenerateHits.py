@@ -16,7 +16,7 @@ import matplotlib.pyplot as plt
 
 class Hit:
     """ hit constructor """
-    def __init__(self, hbc, pbc, point, detpos=0):
+    def __init__(self, hbc, point, pbc = 0, detpos=0):
         self.hbc = int(hbc)
         self.pbc = pbc
         self.lhit = point
@@ -34,10 +34,6 @@ class Hit:
     def __repr__(self):
         """ another print overload """
         return str(self.hbc)
-
-    def origDist(self):
-        """ return distance from origin """
-        return math.sqrt(self.lhit[0]**2 + self.lhit[1]**2)
 
     def plotHit(self):
         """ plot a hit (single point) to plt figure """

@@ -17,26 +17,26 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 
-from util import pt_dist, circ_intersect
+from Common.util import pt_dist, circ_intersect
 
 class Particle:
     """ particle constructor """
-    def __init__(self, barcode, hitbcs, gen = False, vertices=[]):
+    def __init__(self, barcode, hitbcs):
         self.barcode = barcode
-        self.vertices = vertices
+        self.vertices = []
         self.mangle = []
         self.charge = None
 
         self.hits = []
         self.hitbcs = hitbcs
 
-        ### FOR GENERATED PARTICLES ###
+        ### FOR PARTICLE GENERATION ###
         self.p_radius = 0
         self.centpt = []
         self.p_circ = None
         self.m_ray = None
 
-        if(gen): self.genParticle()
+        self.genParticle()
 
     def genParticle(self):
         """ generate values for particle """
