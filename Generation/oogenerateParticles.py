@@ -53,10 +53,6 @@ class Particle:
             self.centpt = [self.vertices[0] + (self.p_radius*math.sin(self.mangle[2])),
                            self.vertices[1] + (self.p_radius*math.cos(self.mangle[2]))]
 
-    def addHit(self, hit):
-        """ add a hit to self.hits """
-        if hit not in self.hits: self.hits.append(hit)
-
     def getHits(self, detectors, override = False):
         """ produces all hits with the detectors specified, appends them
             to self.hits, assumes particles travel in circular motion so

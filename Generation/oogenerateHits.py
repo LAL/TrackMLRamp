@@ -16,7 +16,7 @@ import matplotlib.pyplot as plt
 
 class Hit:
     """ hit constructor """
-    def __init__(self, hbc, point, pbc = 0, detpos=0):
+    def __init__(self, pbc, hbc, point, detpos=0):
         self.hbc = int(hbc)
         self.pbc = pbc
         self.lhit = point

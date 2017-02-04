@@ -4,6 +4,7 @@
 
 from __future__ import print_function, division
 
+import sys
 import ast
 import random
 import oogenerateParticles as gp
@@ -36,14 +37,16 @@ class particleController:
 
     def createParticles(self, n):
         """ add n particles to self.particles, increment bcTracker """
+        if len(self.detectors) == 0:
+            print("Please generate detectors before generating particles")
+            return
         p_ind = len(self.pbc)
         h_ind = len(self.hbc)
         self.generateBarcodes(n) #generate n random barcodes.
-        tl = max(len(self.detectors), 10)
+        tl = len(self.detectors)
         for i in range(n):
             self.particles.append(gp.Particle(self.pbc[p_ind+i], 
-                                  self.hbc[h_ind+(tl*i):h_ind+(tl*i)+tl],
-                                  gen=True))
+                                  self.hbc[h_ind+(tl*i):h_ind+(tl*i)+tl]))
 
     def printParticles(self):
         """ print all particles in self.particles to stdout """
@@ -159,7 +162,7 @@ class particleController:
         #len(self.detectors)*i + len(self.detectors) -1
         p_min = 1
         h_min = 1
-        h_inc = max(len(self.detectors), 1)
+        h_inc = len(self.detectors)
 
         if (self.pbc): #if there are already barcodes
             p_min = max(self.pbc) + 1
