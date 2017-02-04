@@ -16,16 +16,10 @@ import matplotlib.pyplot as plt
 
 class Hit:
     """ hit constructor """
-    def __init__(self, hbc, pbc, point, detpos=0):
+    def __init__(self, hbc, point, detpos=0):
         self.hbc = int(hbc)
-        self.pbc = pbc
         self.lhit = point
         self.detpos = detpos #to speed up certain processes
-
-        ### CURRENTLY UNUSED ###
-        self.lerr = []
-        self.globhit = []
-        self.cxcycharge = [[]*3]
 
     def __str__(self):
         """ overload print operator """
@@ -45,6 +39,5 @@ class Hit:
 
     def printHit(self, dataset = False):
         """ print hit to stdout """
-        #TODO: add support for printing datasets - what should the format be?
-        print(self.hbc, ',', self.pbc, ',', list(self.lhit), sep='')
+        print(self.hbc, ',', list(self.lhit), sep='')
 
