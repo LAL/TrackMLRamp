@@ -62,7 +62,8 @@ class Event:
 
     def printTruths(self):
         """ prints ground truth to stdout """
-        pass
+        for particle in self.particles:
+            particle.printTruth()
 
     def printSolutions(self):
         """ prints solution to stdout """

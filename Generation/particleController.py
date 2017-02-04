@@ -16,7 +16,7 @@ class particleController:
     """
     def __init__(self):
         """ controller constructor """
-        self.eventids = []
+        self.eventids = [0]
 
         self.events = []
         self.particles = []
@@ -35,7 +35,8 @@ class particleController:
         self.events.append(thise)
         self.particles.extend(thise.particles)
         self.hits.extend(thise.hits)
-    
+        return thise
+
     def generateEvents(self, numevents, numparticles, detrad = range(1000, 8001, 1000)):
         """ generate numevents events with numparticles particles per event """
         for i in range(0, numevents):
@@ -44,3 +45,14 @@ class particleController:
     ##############################################################################
     ################       DATASET GENERATION METHODS        #####################
     ##############################################################################
+    def printallTruths(self):
+        for event in self.events:
+            event.printTruths()
+
+    def printallSolutions(self):
+        for event in self.events:
+            event.printSolutions()
+
+    def printallHits(self):
+        for event in self.events:
+            event.printallHits(dataset = True)

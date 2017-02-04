@@ -63,8 +63,8 @@ class Particle:
             for detpos, det in enumerate(detectors):
                 poss_hits = self.getIntersects(det)
                 if poss_hits is not None:
-                    self.hits.append(gh.Hit(self.hitbcs[detpos], self.barcode,
-                                     poss_hits, self.eid, detpos+1))
+                    self.hits.append(gh.Hit(self.barcode, self.hitbcs[detpos],
+                                            self.eid, poss_hits, detpos+1))
 
     def getIntersects(self, detector):
         """ returns intersection pts of two cirles (or a line and a circle).
@@ -107,6 +107,11 @@ class Particle:
     def printParticle(self):
         """ print particle to stdout """
         print(self.barcode,',',self.vertices,',',self.mangle,',',self.charge, sep='')
+
+    def printTruth(self):
+        """ print particle track truth """
+        print(self.eid, ',', self.barcode, ',', self.charge, ',', self.mangle[2],
+              ',', 0, ',', ", ".join( repr(e) for e in self.hits), sep='')
 
     def printSolution(self):
         """ print particle solution to stdout """
