@@ -10,6 +10,7 @@ python2.7 build_datasets.py --output-dir /path/to/outdir/ --num-events 10 --hits
 """
 
 import os
+import sys
 import random
 import argparse
 import Generation.particleController as pc
@@ -37,6 +38,7 @@ class DatasetGenerator:
         self.outdir += "dataset_trackml"
         i = 1
         while os.path.exists(self.outdir):
+            self.outdir.replace("_"+str(i-1), "")
             self.outdir += ("_"+str(i))
             i += 1
         cmd = "mkdir -p "+ self.outdir
@@ -53,9 +55,11 @@ class DatasetGenerator:
         """ generates the hits.csv file """
         hitf = self.outdir + "/hits.csv"
         old = os.dup(1)
+        sys.stdout.flush()
         os.close(1)
         os.open(hitf, os.O_WRONLY | os.O_CREAT)
         cont.printallHits()
+        sys.stdout.flush()
         os.close(1)
         os.dup(old)
         os.close(old)
@@ -68,9 +72,11 @@ class DatasetGenerator:
         """ generates the tracks.csv file """
         truthf = self.outdir + "/tracks.csv"
         old = os.dup(1)
+        sys.stdout.flush()
         os.close(1)
         os.open(truthf, os.O_WRONLY | os.O_CREAT)
         cont.printallTruths()
+        sys.stdout.flush()
         os.close(1)
         os.dup(old)
         os.close(old)
@@ -79,9 +85,11 @@ class DatasetGenerator:
         """ generates the tracks_soln.csv file """
         solnf = self.outdir + "/tracks_soln.csv"
         old = os.dup(1)
+        sys.stdout.flush()
         os.close(1)
         os.open(solnf, os.O_WRONLY | os.O_CREAT)
         cont.printallSolutions()
+        sys.stdout.flush()
         os.close(1)
         os.dup(old)
         os.close(old)
