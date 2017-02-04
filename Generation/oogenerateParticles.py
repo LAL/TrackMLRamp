@@ -21,7 +21,7 @@ from utils.util import pt_dist, circ_intersect
 
 class Particle:
     """ particle constructor """
-    def __init__(self, barcode, hitbcs):
+    def __init__(self, barcode, hitbcs, eventid):
         self.barcode = barcode
         self.vertices = []
         self.mangle = []
@@ -29,6 +29,8 @@ class Particle:
 
         self.hits = []
         self.hitbcs = hitbcs
+
+        self.eid = eventid
 
         ### FOR PARTICLE GENERATION ###
         self.p_radius = 0
@@ -61,8 +63,8 @@ class Particle:
             for detpos, det in enumerate(detectors):
                 poss_hits = self.getIntersects(det)
                 if poss_hits is not None:
-                    self.hits.append(gh.Hit(self.hitbcs[detpos], 
-                                     self.barcode, poss_hits, detpos+1))
+                    self.hits.append(gh.Hit(self.hitbcs[detpos], self.barcode,
+                                     poss_hits, self.eid, detpos+1))
 
     def getIntersects(self, detector):
         """ returns intersection pts of two cirles (or a line and a circle).
@@ -105,6 +107,10 @@ class Particle:
     def printParticle(self):
         """ print particle to stdout """
         print(self.barcode,',',self.vertices,',',self.mangle,',',self.charge, sep='')
+
+    def printSolution(self):
+        """ print particle solution to stdout """
+        print(self.eid, ',', ", ".join( repr(e) for e in self.hits), sep='')
 
     def printHits(self):
         """ print hits to stdout """
