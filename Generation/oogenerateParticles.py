@@ -17,7 +17,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 
-from Common.util import pt_dist, circ_intersect
+from utils.util import pt_dist, circ_intersect
 
 class Particle:
     """ particle constructor """
