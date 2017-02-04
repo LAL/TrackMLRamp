@@ -4,13 +4,10 @@
 
 from __future__ import print_function, division
 
-import sys
-import ast
 import random
-import oogenerateParticles as gp
-import oogenerateHits as gh
-import oogenerateDetectors as gd
 import matplotlib.pyplot as plt
+import oogenerateParticles as gp
+import oogenerateDetectors as gd
 
 from math import sqrt
 

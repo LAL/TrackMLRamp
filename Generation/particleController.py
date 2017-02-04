@@ -2,12 +2,9 @@
 # particleController.py
 # Thomas Boser
 
-from __future__ import print_function, division
+from __future__ import print_function
 
 import oogenerateEvents as ge
-import matplotlib.pyplot as plt
-
-from math import sqrt
 
 class particleController:
     """ 
