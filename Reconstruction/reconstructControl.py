@@ -1,14 +1,14 @@
 #!/usr/bin/env python2.7
-# particleController.py
+# reconstructControl.py
 # Thomas Boser
 
 from __future__ import print_function, division
 
 import ast
 import random
-import oogenerateParticles as gp
-import oogenerateHits as gh
-import oogenerateDetectors as gd
+import Particle as gp
+import Hit as gh
+import Detector as gd
 import matplotlib.pyplot as plt
 
 from util import pt_dist
