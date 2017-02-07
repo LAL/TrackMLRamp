@@ -1,5 +1,5 @@
 #!/usr/bin/env python2.7
-# oogenerateHits.py
+# Hit.py
 # Thomas Boser
 
 """
@@ -16,17 +16,10 @@ import matplotlib.pyplot as plt
 
 class Hit:
     """ hit constructor """
-    def __init__(self, pbc, hbc, eid, point, detpos=0):
+    def __init__(self, hbc, point, detpos=0):
         self.hbc = int(hbc)
-        self.pbc = pbc
-        self.eid = eid
-        self.lhit = list(point)
+        self.lhit = point
         self.detpos = detpos #to speed up certain processes
-
-        ### CURRENTLY UNUSED ###
-        self.lerr = []
-        self.globhit = []
-        self.cxcycharge = [[]*3]
 
     def __str__(self):
         """ overload print operator """
@@ -36,15 +29,15 @@ class Hit:
         """ another print overload """
         return str(self.hbc)
 
+    def origDist(self):
+        """ return distance from origin """
+        return math.sqrt(self.lhit[0]**2 + self.lhit[1]**2)
+
     def plotHit(self):
         """ plot a hit (single point) to plt figure """
         plt.scatter(self.lhit[0], self.lhit[1])
 
     def printHit(self, dataset = False):
         """ print hit to stdout """
-        if dataset:
-            print(self.eid, ',', self.hbc, ',', self.lhit[0], ',', self.lhit[1], sep='')
-        else:
-            print(self.hbc, ',', self.pbc, ',', self.eid, ',', 
-                  ", ".join( repr(e) for e in self.lhit), sep='')
+        print(self.hbc, ',', list(self.lhit), sep='')
 

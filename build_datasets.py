@@ -1,38 +1,98 @@
 #!/usr/bin/env python2.7
-# fileControl.py
+# build_datasets.py
 # Thomas Boser
 
-""" 
-Creates datasets.
+"""
+Basic command line program to create datasets.
+
+Example usage:
+python2.7 build_datasets.py --output-dir /path/to/outdir/ --num-events 10 --hits-per-event 10000 
 """
 
 import os
 import sys
+import random
+import argparse
 import Generation.particleController as pc
 
-def createDataset(n):
-    #first and second datasets
-    orig_stdout = sys.stdout
-    for file in ["hits_train", "particle_valid", "particle_test"]:
-        cont = pc.particleController()
-        cont.clearController()
-        cont.createParticles(n)
-        for i in range(1000, 8001, 1000): cont.addDetector(i)
-        cont.computeallHits()
-        cont.moveHits()
-        outf = open(file + ".csv", 'w')
-        sys.stdout = outf
-        if file is "hits_train.csv": cont.printallHits()
-        else: cont.printallHits(dataset = True)
-        outf.close()
-        outf = open(file + "_soln.txt", 'w')
-        sys.stdout = outf
-        cont.printSoln()
-        outf.close()
-    #zip input data, clean directory
-    os.system("zip input_data_1_2 hits_train.csv particle_valid.csv particle_test.csv")
-    os.system("rm hits_train.csv particle_valid.csv particle_test.csv")
-    os.system("mkdir data_results")
-    os.system("mv hits_train_soln.txt particle_valid_soln.txt particle_test_soln.txt data_results")
+class DatasetGenerator:
+    def __init__(self):
+        parser = argparse.ArgumentParser(description='Generates TrackML datasets and solutions.')
+        parser.add_argument('--output-dir', default='/', required=False)
+        parser.add_argument('--num-events', default=1, required=False)
+        parser.add_argument('--hits-per-event', default=1000, required=False)
+        parser.add_argument('--detectors', default=range(1000, 8001, 1000), required=False) #not implmented yet
 
-createDataset(10)
+        args = parser.parse_args()
+        self.outdir = args.output_dir
+        self.numevents = int(args.num_events)
+        self.hpe = int(args.hits_per_event)
+        self.detectors = args.detectors
+
+        self.generateDataset()
+
+    def generateDataset(self):
+        """ create a directory with new dataset based on specs """
+        if self.outdir[-1] != "/": 
+            self.outdir += "/"
+        self.outdir += "dataset_trackml"
+        i = 1
+        while os.path.exists(self.outdir):
+            self.outdir.replace("_"+str(i-1), "")
+            self.outdir += ("_"+str(i))
+            i += 1
+        cmd = "mkdir -p "+ self.outdir
+        os.system(cmd)
+
+        cont = pc.particleController()
+        cont.generateEvents(self.numevents, self.hpe, self.detectors)
+
+        self.generateHits(cont)
+        self.generateTruths(cont)
+        self.generateSolution(cont)
+
+    def generateHits(self, cont):
+        """ generates the hits.csv file """
+        hitf = self.outdir + "/hits.csv"
+        old = os.dup(1)
+        sys.stdout.flush()
+        os.close(1)
+        os.open(hitf, os.O_WRONLY | os.O_CREAT)
+        cont.printallHits()
+        sys.stdout.flush()
+        os.close(1)
+        os.dup(old)
+        os.close(old)
+
+        lines = open(hitf).readlines()
+        random.shuffle(lines)
+        open(hitf, 'w').writelines(lines)
+
+    def generateTruths(self, cont):
+        """ generates the tracks.csv file """
+        truthf = self.outdir + "/tracks.csv"
+        old = os.dup(1)
+        sys.stdout.flush()
+        os.close(1)
+        os.open(truthf, os.O_WRONLY | os.O_CREAT)
+        cont.printallTruths()
+        sys.stdout.flush()
+        os.close(1)
+        os.dup(old)
+        os.close(old)
+
+    def generateSolution(self, cont):
+        """ generates the tracks_soln.csv file """
+        solnf = self.outdir + "/tracks_soln.csv"
+        old = os.dup(1)
+        sys.stdout.flush()
+        os.close(1)
+        os.open(solnf, os.O_WRONLY | os.O_CREAT)
+        cont.printallSolutions()
+        sys.stdout.flush()
+        os.close(1)
+        os.dup(old)
+        os.close(old)
+
+if __name__ == '__main__':
+    dg = DatasetGenerator()
