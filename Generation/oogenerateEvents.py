@@ -161,6 +161,7 @@ class Event:
         self.clearHits()
         for particle in self.particles:
             self.hits.extend(particle.hits)
+        random.shuffle(self.hits) #DR randomise hits within event.hits (could also order geometrically)
 
     def generateBarcodes(self, n):
         #particles will be assigned a barcode at index i and particle
