@@ -65,7 +65,6 @@ class DatasetGenerator:
         os.close(old)
 
         lines = open(hitf).readlines()
-        random.shuffle(lines)
         open(hitf, 'w').writelines(lines)
 
     def generateTruths(self, cont):
